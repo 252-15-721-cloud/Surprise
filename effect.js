@@ -6,39 +6,53 @@ $(window).on('load', function () {
 
 $(document).ready(function () {
 
-    // Total 8 balloons
+    // Total 7 balloons
     const balloonIds = [
         'b1', 'b2', 'b3', 'b4',
-        'b5', 'b6', 'b7', 'b8'
+        'b5', 'b6', 'b7'
     ];
 
-    // Final balloon IDs after clicking Happy Birthday
+    // Final balloon IDs
     const finalIds = [
         'b11', 'b22', 'b33', 'b44',
-        'b55', 'b66', 'b77', 'b88'
+        'b55', 'b66', 'b77'
     ];
 
+    // Arrange balloons for PC and mobile
     function arrangeBalloons() {
 
-        const vw = $(window).width() / 2;
+        const screenWidth = $(window).width();
+        const center = screenWidth / 2;
 
-        const positions = [
-            -315, -225, -135, -45,
-             45,  135,  225, 315
-        ];
+        let positions;
+        let balloonWidth;
+
+        if (screenWidth <= 480) {
+            // Mobile positions
+            positions = [-135, -90, -45, 0, 45, 90, 135];
+            balloonWidth = 70;
+        } else if (screenWidth <= 768) {
+            // Tablet positions
+            positions = [-210, -140, -70, 0, 70, 140, 210];
+            balloonWidth = 85;
+        } else {
+            // PC positions
+            positions = [-315, -225, -135, -45, 45, 135, 225];
+            balloonWidth = 100;
+        }
 
         finalIds.forEach(function (id, index) {
 
             $('#' + id).stop().animate({
                 top: 240,
-                left: vw + positions[index]
+                left: center - balloonWidth / 2 + positions[index]
             }, 500);
 
         });
     }
 
     // Window resize
-    $(window).resize(function () {
+    $(window).on('resize', function () {
         arrangeBalloons();
     });
 
@@ -63,8 +77,13 @@ $(document).ready(function () {
     // Play music
     $('#play').click(function () {
 
-        var audio = $('.song')[0];
-        audio.play();
+        const audio = $('.song')[0];
+
+        if (audio) {
+            audio.play().catch(function (error) {
+                console.log('Audio playback error:', error);
+            });
+        }
 
         $('#bulb_yellow').addClass('bulb-glow-yellow-after');
         $('#bulb_red').addClass('bulb-glow-red-after');
@@ -96,8 +115,9 @@ $(document).ready(function () {
     // Fly balloons
     function flyBalloon(id) {
 
-        const randleft = 1000 * Math.random();
-        const randtop = 500 * Math.random();
+        const screenWidth = $(window).width();
+        const randleft = Math.random() * Math.max(0, screenWidth - 100);
+        const randtop = 200 + Math.random() * 300;
 
         $('#' + id).animate({
             left: randleft,
@@ -107,6 +127,7 @@ $(document).ready(function () {
         });
     }
 
+    // Balloons flying
     $('#balloons_flying').click(function () {
 
         $('.balloon-border').animate({
@@ -117,7 +138,7 @@ $(document).ready(function () {
             'balloons-rotate-behaviour-one'
         );
 
-        $('#b2,#b3,#b6,#b8').addClass(
+        $('#b2,#b3,#b6').addClass(
             'balloons-rotate-behaviour-two'
         );
 
