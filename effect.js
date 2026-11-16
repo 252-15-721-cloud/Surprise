@@ -6,43 +6,43 @@ $(window).on('load', function () {
 
 $(document).ready(function () {
 
+    // Total 8 balloons
     const balloonIds = [
         'b1', 'b2', 'b3', 'b4',
         'b5', 'b6', 'b7', 'b8'
     ];
 
-    let vw;
+    // Final balloon IDs after clicking Happy Birthday
+    const finalIds = [
+        'b11', 'b22', 'b33', 'b44',
+        'b55', 'b66', 'b77', 'b88'
+    ];
 
     function arrangeBalloons() {
-        vw = $(window).width() / 2;
+
+        const vw = $(window).width() / 2;
 
         const positions = [
             -315, -225, -135, -45,
              45,  135,  225, 315
         ];
 
-        balloonIds.forEach(function (id, index) {
-            $('#' + id).stop();
-            $('#' + id.replace('b', 'b') + '8');
-        });
-
-        const finalIds = [
-            'b11', 'b22', 'b33', 'b44',
-            'b55', 'b66', 'b77', 'b88'
-        ];
-
         finalIds.forEach(function (id, index) {
-            $('#' + id).animate({
+
+            $('#' + id).stop().animate({
                 top: 240,
                 left: vw + positions[index]
             }, 500);
+
         });
     }
 
+    // Window resize
     $(window).resize(function () {
         arrangeBalloons();
     });
 
+    // Turn on lights
     $('#turn_on').click(function () {
 
         $('#bulb_yellow').addClass('bulb-glow-yellow');
@@ -60,6 +60,7 @@ $(document).ready(function () {
             });
     });
 
+    // Play music
     $('#play').click(function () {
 
         var audio = $('.song')[0];
@@ -81,6 +82,7 @@ $(document).ready(function () {
             });
     });
 
+    // Decorate banner
     $('#bannar_coming').click(function () {
 
         $('.bannar').addClass('bannar-come');
@@ -91,6 +93,7 @@ $(document).ready(function () {
             });
     });
 
+    // Fly balloons
     function flyBalloon(id) {
 
         const randleft = 1000 * Math.random();
@@ -128,6 +131,7 @@ $(document).ready(function () {
             });
     });
 
+    // Show cake
     $('#cake_fadein').click(function () {
 
         $('.cake').fadeIn('slow');
@@ -138,6 +142,7 @@ $(document).ready(function () {
             });
     });
 
+    // Light candle
     $('#light_candle').click(function () {
 
         $('.fuego').fadeIn('slow');
@@ -147,6 +152,7 @@ $(document).ready(function () {
         });
     });
 
+    // Show HBD JINIA
     $('#wish_message').click(function () {
 
         balloonIds.forEach(function (id, index) {
@@ -155,8 +161,9 @@ $(document).ready(function () {
 
             $('#' + id).attr(
                 'id',
-                'b' + (index + 1) + (index + 1)
+                finalIds[index]
             );
+
         });
 
         arrangeBalloons();
@@ -170,6 +177,7 @@ $(document).ready(function () {
             });
     });
 
+    // Birthday message
     $('#story').click(function () {
 
         $(this).fadeOut('slow');
